@@ -3,7 +3,7 @@
 
 clear all;
 close all;
-img = 'E:\QXH\picture\海上雾天\Sea Fog\去雾结果\13-tip\2.jpg';
+img = 'E:\QXH\picture\海上雾天\Sea Fog\fog\海雾图像数据库\测试集\4.jpg';
 I = im2double(imread(img));
 [H, W, D] = size(I);
 figure,imshow(I);
@@ -11,10 +11,12 @@ figure,imshow(I);
 %%%%%%%%%%the illumination decomposition
 % I: input
 % lambda: corresponds to the alpha in Eq. (7) of the paper, control the sharpness of fog layer.
+% lambda2: corresponds to the beta in Eq. (7) of the paper, control the illumination of G.
 % lb: lower bound of the Layer 1,need to be same dimention with input I 
 % I0: initialization of Layer 1, default as the input I
+% fast: whether use the fast impletment, 1:fast 2:normal
 %%%%%%%%%%the third parameter 
-[LB, LR] = layer_decom(I, 50, zeros(H,W,D)+0.01, I);  
+[LB, LR] = layer_decom(I, 50, 0.01, zeros(H,W,D)+0.01, I, 2);  
 figure,imshow(LB);
 figure,imshow(adjust(LR));
 %%%%%%%%%%the fog layer defogging  process. We utilized the improved Berman's algorithm in the process.  

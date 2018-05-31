@@ -154,7 +154,7 @@ radius_eval_fun = @(r) min(1, 3*max(0.001, r-0.1));
 %%%%%
 lam = adjust(LR(:,:,1));  
 tr = transmission_estimation(ind==ind_ix);
-tr = min(power(max(transmission_estimation/min(tr),1),2),100);  %****/mean(tr)
+tr = min(power(max(transmission_estimation/min(tr),1),1.5),100);  %****/mean(tr)
 c2 = 2./(2+exp((lam-1).*tr));
 transmission_estimation = 1-c2+c2.*transmission_estimation;
 %%%%%%%
