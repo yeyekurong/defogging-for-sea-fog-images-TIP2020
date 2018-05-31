@@ -51,14 +51,14 @@ if (~exist('air_light','var'))
         sumpoint=sumpoint+count(i);
         i=i-1;
     end
-    temp=im2bw(pp,double(i-1)/255);%将图像二值化，以i为界
+    temp=im2bw(pp,double(i-1)/255);
     % temp = ones(h,w);
     AR=double(temp).*double(img_hazy_corrected(:,:,1));
     AG=double(temp).*double(img_hazy_corrected(:,:,2));
-    AB=double(temp).*double(img_hazy_corrected(:,:,3));%找到天空亮度的分布图，将分割点以下的全部置为0，利用提取天空亮度。
-    A1=double(max(max(AR)));  %R通道像素的最大值
-    A2=double(max(max(AG)));  %G通道像素的最大值
-    A3=double(max(max(AB)));  %B通道像素的最大值  大气光不要设置的过小，否则聚类的结果会很散，透射率图也出现很多artifact
+    AB=double(temp).*double(img_hazy_corrected(:,:,3));
+    A1=double(max(max(AR))); 
+    A2=double(max(max(AG))); 
+    A3=double(max(max(AB))); 
     Amax = max(max(A1,A2),A3);
     air_light(:,:,1) = A1;
     air_light(:,:,2) = A2;
@@ -154,19 +154,13 @@ radius_eval_fun = @(r) min(1, 3*max(0.001, r-0.1));
 %%%%%
 lam = adjust(LR(:,:,1));  
 tr = transmission_estimation(ind==ind_ix);
-tr = min(power(max(transmission_estimation/min(tr),1),1),100);  %****/mean(tr)
-c2 = 1./(1+exp((lam-1).*tr));
-% c2(ind~=ind_ix) = 1;
+tr = min(power(max(transmission_estimation/min(tr),1),2),100);  %****/mean(tr)
+c2 = 2./(2+exp((lam-1).*tr));
 transmission_estimation = 1-c2+c2.*transmission_estimation;
 %%%%%%%
 radius_reliability = radius_eval_fun(radius_std./max(radius_std(:)));%每个像素通过对应的半径的标准差来衡量可信度
 data_term_weight   = bin_eval_fun(bin_count_map).*radius_reliability; %权重
-
 lambda = 0.02;
-% 
-% lambda = 2;
-% transmission = CalTransmission(img_hazy, transmission_estimation, lambda, 0.5); % using contextual information
-
 transmission = wls_optimization(transmission_estimation, data_term_weight, img_hazy.^0.7, lambda);
 
 
@@ -184,11 +178,5 @@ img_dehazed(img_dehazed>1) = 1;
 img_dehazed(img_dehazed<0) = 0;
 img_dehazed = img_dehazed.^(1/gamma); % radiometric correction
 
-% For display, we perform a global linear contrast stretch on the output, 
-% clipping 0.5% of the pixel values both in the shadows and in the highlights 
-% adj_percent = [0.005, 0.995];
-% img_dehazed = adjust(img_dehazed,adj_percent);
-% 
-% img_dehazed = im2uint8(img_dehazed);
 
 end % function non_local_dehazing
