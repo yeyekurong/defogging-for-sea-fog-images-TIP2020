@@ -2,8 +2,9 @@
 %Decomposition for Visual Maritime Surveillance",
 
 clear all;
-% close all;
-img = 'E:\QXH\picture\∫£…œŒÌÃÏ\Sea Fog\46.jpg';
+close all;
+addpath('basic');
+img = 'E:\QXH\picture\ChinaMM18dehaze\testdata\testdata\outdoor\hazy\0010.png';
 I = im2double(imread(img));
 [H, W, D] = size(I);
 figure,imshow(I);
@@ -18,7 +19,7 @@ figure,imshow(I);
 %%%%%%%%%%the third parameter 
 [LB, LR] = layer_decom(I, 500, 0.001, zeros(H,W,D)+0.01, I, 1);  
 % figure,imshow(LB);
-% figure,imshow(adjust(LR));
+figure,imshow(adjust(LR));
 %%%%%%%%%%the fog layer defogging  process. We utilized the improved Berman's algorithm in the process.  
 gamma = 1.3;
 [out_Im, trans_refined,ind] = non_local_dehazing(uint8((LB)*255),LR, gamma);
