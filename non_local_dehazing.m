@@ -155,7 +155,13 @@ radius_eval_fun = @(r) min(1, 3*max(0.001, r-0.1));
 lam = adjust(LR(:,:,1));  
 tr = transmission_estimation(ind==ind_ix);
 tr = min(power(max(transmission_estimation/min(tr),1),1.2),100);  %****/mean(tr)
-c2 = 1.5./(1.5+exp((lam-1).*tr));
+Imax = min(img_hazy,[],3);
+N = boxfilter(ones(h,w),10);
+Imax = boxfilter(Imax,10)./N;
+ill = power(abs(max(air_light)-Imax)./max(air_light),1);
+%ill = 1%%%%%%%%%%
+c2 = 1.5./(1.5+exp(ill.*(lam-1).*tr));
+figure,imshow(c2);
 transmission_estimation = 1-c2+c2.*transmission_estimation;
 %%%%%%%
 radius_reliability = radius_eval_fun(radius_std./max(radius_std(:)));%每个像素通过对应的半径的标准差来衡量可信度
