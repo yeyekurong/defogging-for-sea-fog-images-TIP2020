@@ -17,12 +17,13 @@ figure,imshow(I);
 % I0: initialization of Layer 1, default as the input I
 % fast: whether use the fast impletment, 1:fast 2:normal
 %%%%%%%%%%the third parameter 
-[LB, LR] = layer_decom(I, 500, 0.001, zeros(H,W,D)+0.01, I, 1);  
+[alpha,beta, pro] = parameter_sel(I);
+[LB, LR] = layer_decom(I, alpha, beta, zeros(H,W,D)+0.01, I, 1);  
 % figure,imshow(LB);
 figure,imshow(adjust(LR));
 %%%%%%%%%%the fog layer defogging  process. We utilized the improved Berman's algorithm in the process.  
 gamma = 1.3;
-[out_Im, trans_refined,ind] = non_local_dehazing(uint8((LB)*255),LR, gamma);
+[out_Im, trans_refined,ind] = non_local_dehazing(uint8((LB)*255),LR, gamma, pro);
 out_Im = im2double(out_Im);
 figure,imshow(trans_refined);
 % figure,imshow(out_Im);
@@ -32,8 +33,6 @@ figure,imshow(trans_refined);
 % LR: the glow-shaped illumination layer.
 % I: the original fog image.
 % ga: the index in Eq.(17), which control the gamma transformation
-[LR2,out_Im2] = luminance_com(out_Im,LR,I,1);
+[LR2,out_Im2] = luminance_com(out_Im,LR,I,2);
 out_Im3 = out_Im2  + LR2;    
-adj_percent = [0.0, 0.95];   
-out_Im3 = adjust(out_Im3,adj_percent);
 figure,imshow(out_Im3);

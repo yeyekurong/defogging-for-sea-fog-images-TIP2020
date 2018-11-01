@@ -1,4 +1,4 @@
-function [img_dehazed, transmission, ind_dis] = non_local_dehazing(img_hazy, LR, gamma, air_light)
+function [img_dehazed, transmission, ind_dis] = non_local_dehazing(img_hazy, LR, gamma, pro)
 %The core implementation of "Non-Local Image Dehazing", CVPR 2016
 % 
 % The details of the algorithm are described in our paper: 
@@ -154,13 +154,13 @@ radius_eval_fun = @(r) min(1, 3*max(0.001, r-0.1));
 %%%%%
 lam = adjust(LR(:,:,1));  
 tr = transmission_estimation(ind==ind_ix);
-tr = min(power(max(transmission_estimation/min(tr),1),1.2),100);  %****/mean(tr)
+tr = min(power(max(transmission_estimation/min(tr),1),pro),100);  %****/mean(tr)
 Imax = min(img_hazy,[],3);
 N = boxfilter(ones(h,w),10);
 Imax = boxfilter(Imax,10)./N;
 ill = power(abs(max(air_light)-Imax)./max(air_light),1);
 %ill = 1%%%%%%%%%%
-c2 = 1.5./(1.5+exp(ill.*(lam-1).*tr));
+c2 = pro./(pro+exp(ill.*(lam-1).*tr));
 figure,imshow(c2);
 transmission_estimation = 1-c2+c2.*transmission_estimation;
 %%%%%%%
