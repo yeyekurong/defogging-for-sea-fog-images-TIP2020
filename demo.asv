@@ -4,7 +4,7 @@
 clear all;
 close all;
 addpath('basic');
-img = 'D:\Git\defogging-for-sea-fog-images\sea-fog-dataset\318.jpg';
+img = 'D:\Git\defogging-for-sea-fog-images\sea-fog-dataset\85.jpg';
 I = im2double(imread(img));
 [H, W, D] = size(I);
 figure,imshow(I);
@@ -35,7 +35,4 @@ out_Im = im2double(out_Im);
 % ga: the index in Eq.(17), which control the gamma transformation
 [LR2,out_Im2] = luminance_com(out_Im,LR,I,2);
 out_Im3 = out_Im2  + LR2;    
-figure,imshow(out_Im3);
-adj_percent = [0.001, 0.995];   
-out_Im3 = adjust(out_Im3,adj_percent);
 figure,imshow(out_Im3);

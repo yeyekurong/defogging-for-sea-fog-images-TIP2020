@@ -161,7 +161,7 @@ Imax = boxfilter(Imax,10)./N;
 ill = power(abs(max(air_light)-Imax)./max(air_light),1);
 %ill = 1%%%%%%%%%%
 c2 = pro./(pro+exp(ill.*(lam-1).*tr));
-figure,imshow(c2);
+% figure,imshow(c2);
 transmission_estimation = 1-c2+c2.*transmission_estimation;
 %%%%%%%
 radius_reliability = radius_eval_fun(radius_std./max(radius_std(:)));%每个像素通过对应的半径的标准差来衡量可信度
