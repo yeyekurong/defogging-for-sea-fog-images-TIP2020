@@ -22,7 +22,7 @@ figure,imshow(I);
 % figure,imshow(LB);
 % figure,imshow(adjust(LR));
 %%%%%%%%%%the fog layer defogging  process. We utilized the improved Berman's algorithm in the process.  
-gamma = 1.3;
+gamma = 1.5;
 [out_Im, trans_refined,ind] = non_local_dehazing(uint8((LB)*255),LR, gamma, pro);
 out_Im = im2double(out_Im);
 % figure,imshow(trans_refined);
@@ -33,9 +33,9 @@ out_Im = im2double(out_Im);
 % LR: the glow-shaped illumination layer.
 % I: the original fog image.
 % ga: the index in Eq.(17), which control the gamma transformation
-[LR2,out_Im2] = luminance_com(out_Im,LR,I,2);
+[LR2,out_Im2] = luminance_com(out_Im,LR,I,1.8);
 out_Im3 = out_Im2  + LR2;    
 figure,imshow(out_Im3);
-adj_percent = [0.001, 0.995];   
-out_Im3 = adjust(out_Im3,adj_percent);
-figure,imshow(out_Im3);
+% adj_percent = [0.001, 0.995];   
+% out_Im3 = adjust(out_Im3,adj_percent);
+% figure,imshow(out_Im3);
