@@ -4,7 +4,7 @@
 clear all;
 close all;
 addpath('basic');
-img = 'D:\Git\defogging-for-sea-fog-images\sea-fog-dataset\318.jpg';
+img = 'D:\Git\defogging-for-sea-fog-images\sea-fog-dataset\275.jpg';
 I = im2double(imread(img));
 [H, W, D] = size(I);
 figure,imshow(I);
