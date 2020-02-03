@@ -1,8 +1,10 @@
 %The core implementation of "Single Image Defogging Based on Illumination
-%Decomposition for Visual Maritime Surveillance",
+%Decomposition for Visual Maritime Surveillance",2019
+%the code can noly used in the Windows platform
+%author Guo Qiang
 
 clear all;
-close all;
+%close all;
 addpath('basic');
 img = 'D:\Git\defogging-for-sea-fog-images\sea-fog-dataset\275.jpg';
 I = im2double(imread(img));
@@ -19,11 +21,9 @@ figure,imshow(I);
 %%%%%%%%%%the third parameter 
 [alpha,beta, pro] = parameter_sel(I);
 [LB, LR] = layer_decom(I, alpha, beta, zeros(H,W,D)+0.01, I, 1);  
-% figure,imshow(LB);
-% figure,imshow(adjust(LR));
 %%%%%%%%%%the fog layer defogging  process. We utilized the improved Berman's algorithm in the process.  
 gamma = 1.5;
-[out_Im, trans_refined,ind] = non_local_dehazing(uint8((LB)*255),LR, gamma, pro);
+[out_Im, trans_refined,ind] = non_local_dehazing_new(uint8((LB)*255),LR, gamma, pro);
 out_Im = im2double(out_Im);
 % figure,imshow(trans_refined);
 % figure,imshow(out_Im);
@@ -33,9 +33,7 @@ out_Im = im2double(out_Im);
 % LR: the glow-shaped illumination layer.
 % I: the original fog image.
 % ga: the index in Eq.(17), which control the gamma transformation
-[LR2,out_Im2] = luminance_com(out_Im,LR,I,1.8);
+[LR2,out_Im2] = luminance_com(out_Im,LR,I,1.6);
 out_Im3 = out_Im2  + LR2;    
 figure,imshow(out_Im3);
-% adj_percent = [0.001, 0.995];   
-% out_Im3 = adjust(out_Im3,adj_percent);
-% figure,imshow(out_Im3);
+
