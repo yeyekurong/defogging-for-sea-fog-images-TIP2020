@@ -2,3 +2,4 @@
 %Decomposition for Visual Maritime Surveillance",2019
 %the code can noly used in the Windows platform
 %author Guo Qiang
+%1263836618@qq.com
