@@ -85,7 +85,7 @@ for i = 1:iter
     L1(t) = lb(t);
     t = L1>hb;
     L1(t) = hb(t);
-    
+    L2 = I - L1;
 end
 L1 = L1(pad_size+1:N-pad_size,pad_size+1:M-pad_size,:);
 L2 = L2(pad_size+1:N-pad_size,pad_size+1:M-pad_size,:);
@@ -99,6 +99,7 @@ L2_g2 = wlsFilter(L2_coarse,0.5, 1.2, min(L1,[],3));
 else
 L2_g2 = im2double(qxfilter(L2_coarse*255,0.01,0.02));
 end
+
 L2 = repmat(L2_g2,[1,1,D]);
 L1 = I - double(L2);
 

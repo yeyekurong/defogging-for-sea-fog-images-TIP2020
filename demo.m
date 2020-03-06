@@ -16,7 +16,7 @@ figure,imshow(I);
 % fast: whether use the fast impletment, 1:fast 2:normal
 %%%%%%%%%%the third parameter 
 [alpha,beta, pro] = parameter_sel(I);
-[LB, LR] = layer_decom(I, alpha, beta, zeros(H,W,D)+0.01, I, 1);  
+[LB, LR] = layer_decom(I, alpha, beta, zeros(H,W,D)+0.01, I, 2);  
 %%%%%%%%%%the fog layer defogging  process. We utilized the improved Berman's algorithm in the process.  
 gamma = 1.5;
 [out_Im, trans_refined,ind] = non_local_dehazing_new(uint8((LB)*255),LR, gamma, pro);

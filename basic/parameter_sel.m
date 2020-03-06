@@ -21,6 +21,6 @@ beta = 0.001;
 pro = 1.6;
 if(ratio>2.3)
     beta = 0.001;
-    pro = 2.3;
+    pro = 2.1;
 end
 end

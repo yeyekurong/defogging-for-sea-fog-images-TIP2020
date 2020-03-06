@@ -1,7 +1,8 @@
 function J=qxfilter(In,sigma_spatial,L)
 %%%%%%%%%sigma_spatial
 %%%%%%%%%表示距离权重，越大表示正太分布中的数据分布越分散，也就意味着梯度相近的区域越接近于均值滤波,这个值影响不大
-%%%%%%%%%sigma_range 表示梯度权重，越大表示大梯度与小梯度之间差距越小，越平滑。
+%%%%%%%%%sigma_range 表示梯度权重，越大表示大梯度与小梯度之间差距越小，越平滑。sigma_spatial = 0.03;
+%%%%%%%%%结果取整有利于查看天空部分的梯度差异
 [h,w,p] = size(In);
 if p == 1
     r = In;
@@ -63,7 +64,7 @@ if p == 1
         ypr(i,:) = inv_alpha(i,:) .* tempr(i,:) + alpha_(i,:) .* ypr(i+1,:);
         out_r(i,:) = 0.5*(ypr(i,:) + out_r(i,:) );
     end
-    J = out_r;
+    J = uint8(out_r);
 else 
     r = In(:,:,1);
     g = In(:,:,2);
